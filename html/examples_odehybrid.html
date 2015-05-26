@@ -1,0 +1,883 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Examples of odehybrid</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-05-23"><meta name="DC.source" content="examples_odehybrid.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Examples of <tt>odehybrid</tt></h1><!--introduction--><p>This script contains numerous examples of using <tt>odehybrid</tt> to simulate continuous and discrete systems, from a simple example to more complex examples with non-vector states and logging, introducing all primary features of <tt>odehybrid</tt>. It's meant for viewing directly in MATLAB by clicking "Publish" in the editor or entering:</p><pre class="language-matlab">home = fileparts(which(<span class="string">'examples_odehybrid'</span>));
+web(fullfile(home, <span class="string">'html'</span>, <span class="string">'examples_odehybrid.html'</span>));
+</pre><p>at the command line. This will run the code and open the result as HTML.</p><p>For additional discussion, see:</p><div><ul><li>Online documentation (<a href="http://www.anuncommonlab.com/doc/odehybrid/">http://www.anuncommonlab.com/doc/odehybrid/</a>)</li><li>Discussion of how simulations work (<a href="http://www.anuncommonlab.com/articles/how-simulations-work/">http://www.anuncommonlab.com/articles/how-simulations-work/</a>)</li><li>Motivations behind the tool (<a href="http://www.anuncommonlab.com/blog/a-simulation-engine/">http://www.anuncommonlab.com/blog/a-simulation-engine/</a>)</li></ul></div><p>Copyright 2014 An Uncommon Lab</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Short and Direct</a></li><li><a href="#4">Multiple States</a></li><li><a href="#10">Multiple Continuous and Discrete States</a></li><li><a href="#12">Using Structs for States</a></li><li><a href="#16">Using Other Types</a></li><li><a href="#17">Using Logging</a></li><li><a href="#23">Interpolation</a></li><li><a href="#25">Other Propagators</a></li><li><a href="#27">Multiple Discrete Updates</a></li><li><a href="#29">Using an OutputFcn</a></li><li><a href="#32">Using Events</a></li><li><a href="#35">Using Structs for Output</a></li><li><a href="#38">Notes on Speed</a></li><li><a href="#40">Summary</a></li></ul></div><p><center><h1>Basics</h1></center></p><h2>Short and Direct<a name="2"></a></h2><p>Let's say we have a continuous system in the form:</p><p><img src="examples_odehybrid_eq11099118058511462397.png" alt="$$\dot{x}_c(t) = f_c(t, x_c(t), x_d(t))$$"></p><p>where <img src="examples_odehybrid_eq03870024100092193585.png" alt="$x_c$"> is the continuous state and <img src="examples_odehybrid_eq07737725388692818491.png" alt="$x_d$"> is some state updated at a discrete time step as</p><p><img src="examples_odehybrid_eq08537354732563299936.png" alt="$$x_d(t+\Delta t) = f_d(t, x_c(t), x_d(t))$$"></p><p>Here, we'll give a quick embodiment of this system to show how we can simulate it from its initial condition over time. Afterwards, we'll go more into how it works.</p><p>Let <tt>ode</tt>, <tt>de</tt>, <tt>dt</tt>, <tt>x</tt>, and <tt>u</tt> be <img src="examples_odehybrid_eq06902086386518730424.png" alt="$f_c$">, <img src="examples_odehybrid_eq07323985336366517770.png" alt="$f_d$">, <img src="examples_odehybrid_eq07651498126111630170.png" alt="$\Delta t$">, <img src="examples_odehybrid_eq03870024100092193585.png" alt="$x_c$">, and <img src="examples_odehybrid_eq07737725388692818491.png" alt="$x_d$">, respectively.</p><pre class="codeinput">ode = @(t, x, u) [0 1; 2 0] * x + [0; 1] * u;  <span class="comment">% Differential equation</span>
+de  = @(t, x, u) deal(x, -[8 4] * x);          <span class="comment">% Discrete update equation</span>
+dt  = 0.1;                                     <span class="comment">% Discrete eq. time step</span>
+ts  = [0 5];                                   <span class="comment">% From 0 to 5s</span>
+x0  = [1; 0];                                  <span class="comment">% Initial continuous state</span>
+u0  = 0;                                       <span class="comment">% Initial discrete state</span>
+[t, x, tu, u] = odehybrid(@ode45, ode, de, dt, ts, x0, u0); <span class="comment">% Simulate!</span>
+plot(t, x, tu, u, <span class="string">'.'</span>); xlabel(<span class="string">'Time'</span>);                     <span class="comment">% Plot 'em.</span>
+legend(<span class="string">'x_1'</span>, <span class="string">'x_2'</span>, <span class="string">'u'</span>, <span class="string">'Location'</span>, <span class="string">'se'</span>);                <span class="comment">% Label 'em.</span>
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_01.png" alt=""> <p>This was really quick. Notice how the discrete system is updated regularly every 0.1s, while the continuous system has many more intermediate steps.</p><p>Let's look at what we did. First, it's clear that <img src="examples_odehybrid_eq06902086386518730424.png" alt="$f_c$"> represents (suppressing the dependence on time):</p><p><img src="examples_odehybrid_eq14964292944995088614.png" alt="$$&#xA;    \left[ \begin{array}{c} \dot{x}_1 \\ \dot{x}_2 \end{array} \right]&#xA;  =   \left[ \begin{array}{c c} 0 &amp; 1 \\ 2 &amp; 0 \end{array} \right]&#xA;      \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right]&#xA;    + \left[ \begin{array}{c} 0 \\ 1 \end{array} \right]&#xA;      u&#xA;$$"></p><p>The discrete state is <img src="examples_odehybrid_eq11776305044305525613.png" alt="$u$"> and can be thought of as a controller of this unstable system, guiding it towards [0, 0] (without <img src="examples_odehybrid_eq11776305044305525613.png" alt="$u$">, the system would diverge from [0, 0]). It's updated at 10Hz according to <img src="examples_odehybrid_eq07323985336366517770.png" alt="$f_d$"> which is just:</p><p><img src="examples_odehybrid_eq04503507910695345665.png" alt="$$&#xA;  u = \left[ \begin{array}{c c} -8 &amp; -4 \end{array} \right]&#xA;      \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right]&#xA;$$"></p><p>The second input to the <tt>de</tt> function is the <tt>u</tt> state, but the current <tt>u</tt> won't depend on the last <tt>u</tt>, so it's unused.</p><p>Notice that the discrete update equation actually has <i>two</i> outputs (the <tt>deal</tt> function maps argument 1 to the first output and argument 2 to the second). This is because <tt>odehybrid</tt> allows the discrete update equation to <i>also</i> update the continuous state as well. This is useful for very fast phenomena, like a quick burst of rocket power to change a satellite's orbit. In MATLAB code, we have:</p><pre class="language-matlab">[x_c, x_d] = de(t, x_c, x_d);
+</pre><p>Note that, despite that this example is using linear systems, that has nothing to do with odehybrid. The continuous and discrete equations can be anything (nonlinear, stochastic, user inputs, etc.).</p><p>For the readers with controls backgrounds, this is clearly a discrete proportional-derivative controller for the unstable linear system.</p><p>That's all there is to setting up this basic system, so let's make things more interesting.</p><h2>Multiple States<a name="4"></a></h2><p>As state vectors become large, they become unwieldy. It's difficult to remember what the 10th state is, or the 2031st state. For this reason, <tt>odehybrid</tt> allows the use of individual states as individual arguments into the ODE and DE functions.</p><p>Let's reuse the above example, but let's add something to our discrete controller. Instead of a proportional-derivative controllers, let's make it a proportional-integral-derivative control. Now we'll have two discrete states to keep track of: the input, <tt>u</tt>, and the integral term, <tt>i</tt>, that gets updated every step.</p><p><img src="examples_odehybrid_eq17804952888730603842.png" alt="$$&#xA;  u = \left[ \begin{array}{c c c} -8 &amp; -4 &amp; -1 \end{array} \right]&#xA;      \left[ \begin{array}{c} x_1 \\ x_2 \\ i \end{array} \right]&#xA;$$"></p><p>That <tt>i</tt> term is updated as:</p><p><img src="examples_odehybrid_eq11149857664895560545.png" alt="$$&#xA;  i = i + \frac{1}{2}x_1&#xA;$$"></p><p>To use multiple states, we'll need them to be inputs to our <tt>ode</tt> and <tt>de</tt> functions. Plus, the <tt>de</tt> function will have to output the new discrete state.</p><p>We'll also add a disturbance to the model so the integral term has something to account for. We'll just tack <tt>+ [0; 1]</tt> onto the end.</p><p>Here's the new <tt>ode</tt> (the final input is the integral term, i, but it doesn't need it):</p><pre class="codeinput">ode = @(t, x, u, i)   [0 1; 2 0] * x <span class="keyword">...</span><span class="comment">        % Continuous system</span>
+                    + [0; 1] * u <span class="keyword">...</span><span class="comment">            %   with feedback control</span>
+                    + [0; 1];                   <span class="comment">%   and with a disturbance</span>
+</pre><p>The new <tt>de</tt> is easy too (it uses the integral term, but not the last <tt>u</tt>):</p><pre class="codeinput">de  = @(t, x, u, i) deal(x, <span class="keyword">...</span><span class="comment">                 % No change to cont. state</span>
+                         -[8 4 1] * [x; i], <span class="keyword">...</span><span class="comment"> % Update input</span>
+                         i + 0.5 * x(1));       <span class="comment">% Update integrator</span>
+</pre><p>The options are the same:</p><pre class="codeinput">dt  = 0.1;                                      <span class="comment">% Discrete eq. time step</span>
+ts  = [0 5];                                    <span class="comment">% From 0 to 5s</span>
+x0  = [1; 0];                                   <span class="comment">% Initial continuous state</span>
+</pre><p>Two say we have two separate discrete states, we use a cell array for the discrete state and put each initial value in the appropriate place.</p><pre class="codeinput">d0  = {0, 0};                                   <span class="comment">% Initial discrete states</span>
+</pre><p>The discrete states are output separately:</p><pre class="codeinput">[t, x, td, u, i] = odehybrid(@ode45, ode, de, dt, ts, x0, d0); <span class="comment">% Simulate!</span>
+plot(t, x, td, [u, i], <span class="string">'.'</span>); xlabel(<span class="string">'Time'</span>);                   <span class="comment">% Plot 'em.</span>
+legend(<span class="string">'x_1'</span>, <span class="string">'x_2'</span>, <span class="string">'u'</span>, <span class="string">'\int x_1(t)/2 dt'</span>);                 <span class="comment">% Label 'em.</span>
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_02.png" alt=""> <p>That's still pretty easy to implement. We can expand the continuous states too. The important part is that the <tt>ode</tt> has the form:</p><pre class="language-matlab">[x_dot_1, x_dot_2, ..] = ode(t, x1, x2, .., xd1, xd2, ..);
+</pre><p>And the <tt>de</tt> has the form:</p><pre class="language-matlab">[x1, x2, .., xd1, xd2, ..] = de(t, x1, x2, .., xd1, xd2, ..);
+</pre><p>After simulation is done, <tt>odehybrid</tt> will output:</p><pre class="language-matlab">[t, x1, x2, .., td, xd1, xd2, ..] = odehybrid(@ode45, <span class="keyword">...</span>
+                                              ode, de, dt, ts, <span class="keyword">...</span>
+                                              {x1, x2, <span class="keyword">...</span><span class="comment">}, ...</span>
+                                              {xd1, xd2, <span class="keyword">...</span><span class="comment">});</span>
+</pre><h2>Multiple Continuous and Discrete States<a name="10"></a></h2><p>We'll quickly re-implement the above, with multiple continuous and discrete states. Let's use <tt>p</tt> for <img src="examples_odehybrid_eq06613056106014670631.png" alt="$x_1$"> and <tt>v</tt> for <img src="examples_odehybrid_eq03385156042344747669.png" alt="$x_2$">.</p><pre class="codeinput">ode = @(t, p, v, u, i) deal(v, <span class="keyword">...</span><span class="comment">              % dp/dt (same as before)</span>
+                            2 * p + u + 1);     <span class="comment">% dv/dt (same as before)</span>
+de  = @(t, p, v, u, i) deal(p, <span class="keyword">...</span><span class="comment">              % No change to p</span>
+                            v, <span class="keyword">...</span><span class="comment">              % No change to v</span>
+                            -8*p - 4*v - i, <span class="keyword">...</span><span class="comment"> % Update input</span>
+                            i + 0.5 * p);       <span class="comment">% Update integrator</span>
+dt  = 0.1;                                      <span class="comment">% Discrete eq. time step</span>
+ts  = [0 5];                                    <span class="comment">% From 0 to 5s</span>
+x0  = {1; 0};                                   <span class="comment">% Initial continuous states</span>
+d0  = {0, 0};                                   <span class="comment">% Initial discrete states</span>
+[t, p, v, td, u, i] = odehybrid(@ode45, ode, de, dt, ts, x0, d0);
+plot(t, [p, v], td, [u, i], <span class="string">'.'</span>); xlabel(<span class="string">'Time'</span>);
+legend(<span class="string">'p'</span>, <span class="string">'v'</span>, <span class="string">'u'</span>, <span class="string">'\int p(t)/2 dt'</span>);
+
+num_steps = length(t);
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_03.png" alt=""> <p>Note how all of states are inputs to <tt>ode</tt> and <tt>de</tt> (and therefore must be outputs). Also notice how all of the states are output from <tt>odehybrid</tt>.</p><h2>Using Structs for States<a name="12"></a></h2><p>Aside from using multiple states, we can also use states that aren't simple scalars or vectors. For instance, we can use structs. As a system begins to have many subsystems, using structs is a good way to keep track of scope for all of the states. For instance, we might have <tt>car_sw.cruise_ctrl.speed</tt> and <tt>car_sw.monitor.lane_watcher</tt>, clearly keeping variables scoped to specific systems. Plus, it's easy to hand off relevant substructs to the subsystems:</p><pre class="language-matlab">car_sw.cruise_ctrl = cruise_alg(car_sw.cruise_ctrl, current_speed);
+<span class="comment">% ...</span>
+car_sw.monitor = monitor_alg(car_sw.monitor, sensor_bus, ..);
+</pre><p>Let's continue our PID controller example, making the discrete state a structure with fields for <tt>u</tt> and <tt>i</tt>, and let's also make the continuous state a struct with fields for <tt>p</tt> and <tt>v</tt>.</p><pre class="codeinput">type <span class="string">example_odehybrid_structs</span>
+</pre><pre class="codeoutput">
+% A simple example of using structs with odehybrid.
+function example_odehybrid_structs()
+
+    dt = 0.1;                    % Discrete eq. time step
+    ts = [0 5];                  % Simulation time
+    x0 = struct('p', 1, 'v', 0); % Initial continuous states
+    d0 = struct('u', 0, 'i', 0); % Initial discrete states
+    
+    % Simulate.
+    [t, sig, td, ctrl] = odehybrid(@ode45, @ode, @de, dt, ts, x0, d0);
+    
+    % Plot.
+    plot(t, [sig.p], t, [sig.v], td, [ctrl.u], '.', td, [ctrl.i], '.');
+    xlabel('Time');
+    legend('p', 'v', 'u', '\int p(t)/2 dt');
+    
+end
+
+% Continuous differential equation
+function dsdt = ode(t, signal, controller) %#ok&lt;INUSL&gt;
+    dsdt.p = signal.v;
+    dsdt.v = 2 * signal.p + controller.u + 1;
+end
+
+% Discrete update equation
+function [signal, controller] = de(t, signal, controller) %#ok&lt;INUSL&gt;
+    controller.u = -8 * signal.p - 4*signal.v - controller.i;
+    controller.i = controller.i + 0.5 * signal.p;
+end
+</pre><p>Updating the structures with the discrete update equation is clear (simply update the structs and return them). For the continuous state, we return structs with the same structure, but the values they contain are the time derivatives. Notice in the above out the output struct of the differential equation is called <tt>dsdt</tt> for "d-signal-by-dt". Its <tt>p</tt> field is really <img src="examples_odehybrid_eq08268459927501053355.png" alt="$dp/dt$"> and similarly its <tt>v</tt> field is really <img src="examples_odehybrid_eq17693446393934962769.png" alt="$dv/dt$">. In this way, all of the values in the input struct can be correctly updated with the corresponding derivatives.</p><pre class="codeinput">example_odehybrid_structs();
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_04.png" alt=""> <h2>Using Other Types<a name="16"></a></h2><p>We can mix and match states of different types, including numeric types, structs, and cell arrays. Here's an example set of discrete states with all three:</p><pre class="language-matlab">d0 = {magic(3),                  <span class="comment">% 2D array</span>
+      struct(<span class="string">'mode'</span>, 1),         <span class="comment">% struct</span>
+      {5, [1 2 3], [1 2; 3 4]}}; <span class="comment">% cell array</span>
+</pre><p>Numeric types can also have any data type, e.g. int16, and this will be handled appropriately.</p><p>There is one important thing to note: the size and structure of these states can't change during the simulation. For instance, if one state were a string for the status, e.g., 'online', and the status were changed in the simulation to 'offline' (a different number of characters), there would be an error. Instead, one can either use numbers to represent online or offline or one could pad online with an extra space, i.e., 'online '.</p><p>For advanced types: if custom objects are desired for the states, those can be used to. However, they must have a <tt>state_to_vector</tt> method that returns a complete representation of the internal state numerically and a <tt>vector_to_state</tt> method that reconstructs the object from a vector. See those two function respectively.</p><h2>Using Logging<a name="17"></a></h2><p>Good simulations allow a lot of analysis. So far, we've only been able to get states out of the system and to analyze those states, but what if there were some intermediate variable we wanted to display? We could use MATLAB's debugger to observe their values at each sample, but it's often better to store all of those values and examine them afterwards -- logging. These tools include a logging mechanism called TimeSeriesLogger (it has nothing to do with the <tt>timeseries</tt> class in MATLAB). It's pretty easy to use. Let's take a look.</p><pre class="codeinput">log = TimeSeriesLogger(); <span class="comment">% Create it.</span>
+<span class="keyword">for</span> t = 0:100
+    log.add(<span class="string">'signal 1'</span>, t, randn());
+    log.add(<span class="string">'signal 2'</span>, t, 10*rand());
+<span class="keyword">end</span>
+log.plot();
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_05.png" alt=""> <p>There are many additional options (see the <tt>help TimeSeriesLogger</tt>), but let's focus on how to use this with our simulation. We'll continue to modify the struct example above. This will consist basically of:</p><div><ol><li>Creating a TimeSeriesLogger and passing it to <tt>odehybrid</tt>.</li><li>Adding a <tt>log</tt> input to the <tt>ode</tt> and <tt>de</tt> functions.</li><li>Adding some logging inside those functions.</li><li>Plotting the results when the simulation is done.</li></ol></div><p>Here are the new bits:</p><pre class="language-matlab">log = TimeSeriesLogger();     <span class="comment">% Create the logger.</span>
+<span class="comment">% ...</span>
+[t, sig, td, ctrl] = odehybrid(@ode45, @ode, @de, dt, ts, x0, d0, <span class="keyword">...</span>
+                               [], log);
+<span class="comment">% ...</span>
+</pre><pre class="language-matlab"><span class="keyword">function</span> dsdt = ode(t, signal, controller, log) <span class="keyword">...</span>
+    <span class="comment">% ...</span>
+    <span class="keyword">if</span> nargin &gt;= 4
+        log.add(<span class="string">'acceleration'</span>, t, dsdt.v);
+    <span class="keyword">end</span>
+    <span class="comment">% ...</span>
+</pre><pre class="language-matlab"><span class="keyword">function</span> [signal, controller] = de(t, signal, controller, log)
+    <span class="comment">%...</span>
+    log.add(<span class="string">'sampled v'</span>, t, signal.v);
+    <span class="comment">% ...</span>
+</pre><p>Here's the complete simulator:</p><pre class="codeinput">type <span class="string">example_odehybrid_logging</span>
+</pre><pre class="codeoutput">
+% A simple example of using logging with odehybrid.
+function example_odehybrid_logging()
+
+    dt  = 0.1;                    % Discrete eq. time step
+    ts  = [0 5];                  % Simulation time
+    x0  = struct('p', 1, 'v', 0); % Initial continuous states
+    d0  = struct('u', 0, 'i', 0); % Initial discrete states
+    log = TimeSeriesLogger();     % Create the logger.
+    
+    % Simulate.
+    [t, sig, td, ctrl] = odehybrid(@ode45, @ode, @de, dt, ts, x0, d0, ...
+                                   [], log);
+    
+    % Plot.
+    plot(t, [sig.p], t, [sig.v], td, [ctrl.u], '.', td, [ctrl.i], '.');
+    xlabel('Time');
+    legend('p', 'v', 'u', '\int p(t)/2 dt');
+    
+    % Add log output.
+    log.plot();
+    xlabel('Time');
+    
+end
+
+% Continuous differential equation
+function dsdt = ode(t, signal, controller, log)
+
+    % Calculate the derivatives.
+    dsdt.p = signal.v;
+    dsdt.v = 2 * signal.p + controller.u + 1;
+    
+    % Log the acceleration. We *must* check to see if the log is passed in;
+    % it won't always be passed in.
+    if nargin &gt;= 4
+        log.add('acceleration', t, dsdt.v);
+    end
+    
+end
+
+% Discrete update equation
+function [signal, controller] = de(t, signal, controller, log)
+
+    % Update the discrete state.
+    controller.u = -8 * signal.p - 4*signal.v - controller.i;
+    controller.i = controller.i + 0.5 * signal.p;
+    
+    % Log the velocity as it was sampled. Logs are always passed to the
+    % discrete update functions, so we don't explicitly need to check.
+    log.add('sampled v', t, signal.v);
+    
+end
+</pre><p>And here's the output from the log.</p><pre class="codeinput">example_odehybrid_logging();
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_06.png" alt=""> <p>There we have it. Note that the log <i>won't</i> always be passed in to the ODE. The reason for this is that sometimes the continuous propagators take a large time step, see that the step was too large, and go back and take a smaller time step. The first step is discarded. Because we don't want phantom data points from discarded time steps, <tt>odehybrid</tt> doesn't pass in the logger until the steps are finalized.</p><p><center><h1>Beyond the Basics</h1></center></p><h2>Interpolation<a name="23"></a></h2><p>There's a quick detail that must be pointed out about discrete-time updates. Because these update states <i>directly</i>, those states change <i>instantaneously</i>. That is, at say, t=3 seconds, there's the "original" value of a state ("just to the left" of 3, usually denoted as <img src="examples_odehybrid_eq17676824639475809093.png" alt="$3^-$">). Then there's the updated value at <img src="examples_odehybrid_eq01891744225594948285.png" alt="$3^+$">. So our time and state history might look like this:</p><pre class="codeinput">t = [2.76, 2.91, 3,   3,   3.12].';
+x = [0.2,  0.3,  0.4, 1.1, 1.2].';
+
+clf();
+plot(t, x, <span class="string">'.-'</span>);
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_07.png" alt=""> <p>If we were to try to interpolate this data with <tt>interp1</tt>, it wouldn't work, because it wouldn't know how to handle the doubled 3.</p><p>Therefore, <tt>odehybrid</tt> includes a function called <tt>interpd</tt> (for "interpolate, discrete") which can handle this type of thing. Simply specific whether the "-" or "+" values are desired during interpolation. For <tt>+</tt>, all interpolation between <tt>t</tt> = 2.91 and 3 will use [0.3 0.4] while exactly at 3 the datapoint will be 1.7, and interpolation afterwards uses [1.7 and 1.8]. For <tt>-</tt>, it's the same, except the value right at 3 is 0.4.</p><pre class="codeinput"><span class="comment">% Resample |t| and |x| at |ti| using the "right" value:</span>
+ti = (2.8:0.1:3.1).';
+xi = interpd(t, x, ti, <span class="string">'+'</span>).'
+xi = interpd(t, x, ti, <span class="string">'-'</span>).'
+</pre><pre class="codeoutput">xi =
+    0.2267    0.2933    1.1000    1.1833
+xi =
+    0.2267    0.2933    0.4000    1.1833
+</pre><h2>Other Propagators<a name="25"></a></h2><p>While <tt>ode23</tt> and <tt>ode45</tt>, etc., are robust and convenient tools representing some of what's best about MATLAB, <tt>odehybrid</tt> can expose a few pecularities. For instance, regardless of the dynamics, those functions will always take <i>at least</i> 41 steps to propagate (regardless of what the 'InitialStep' value is in the <tt>odeset</tt> structure). Since <tt>odehybrid</tt> uses <tt>ode45</tt> (or whatever propagator is passed in) between the discrete steps, this means there will be at least 41 time steps representing the continuous dynamics between the discrete steps. Ouch! That can be way too much. For this reason, <tt>odehybrid</tt> includes a few of propagators with the same interface as the <tt>odefun</tt> functions. Perhaps the easiest is <tt>rkadapt</tt>, which is essentially a drop-in replacement for <tt>@ode45</tt> in the examples above.</p><pre class="codeinput">[t, p, v, td, u, i] = odehybrid(@rkadapt, ode, de, dt, ts, x0, d0);
+
+fprintf(<span class="string">'This simulation took %.0f%% of the steps required by ode45.\n'</span>,<span class="keyword">...</span>
+        100*length(t)/num_steps);
+</pre><pre class="codeoutput">This simulation took 33% of the steps required by ode45.
+</pre><p>The <tt>ode45</tt> and <tt>rkadapt</tt> functions are <i>adaptive</i> time-step propagators. This means they "figure out" an appropriate time step to take (see the linked article on how simulations work). However, if one knows a good time step, that can be specified with a fixed-step solver. MATLAB doesn't include any of these, so <tt>odehybrid</tt> includes two: <tt>rk4</tt>, the most common fixed-step propagator, and <tt>rkfixed</tt>, which can implement any fixed-step Runge-Kutta method given the appropriate arguments. We'll show an example using <tt>rk4</tt>. Note that the time step is specified witht he <tt>odeset</tt> structure.</p><pre class="codeinput">options = odeset(<span class="string">'MaxStep'</span>, dt);
+[t, p, v, td, u, i] = odehybrid(@rk4, ode, de, dt, ts, x0, d0, options);
+
+fprintf(<span class="string">'This simulation took %.0f%% of the steps required by ode45.\n'</span>,<span class="keyword">...</span>
+        100*length(t)/num_steps);
+</pre><pre class="codeoutput">This simulation took 22% of the steps required by ode45.
+</pre><h2>Multiple Discrete Updates<a name="27"></a></h2><p>Using multiple discrete update equations is as passing multiple function (in a cell array) in for <tt>de</tt> and passing their corresponding time steps in for <tt>dt</tt>. Here is a simple harmonic oscillator. The discrete updates only "sample" the oscillator, with the first update recording the "position" term and the second update recording the "velocity" term. Each discrete update must take in and return all continuous and discrete states (just like for the case with a single discrete update equation).</p><pre class="codeinput">ode = @(t, x, p, v) [0 1; -1 0] * x;         <span class="comment">% Differential equation</span>
+de  = {@(t, x, p, v) deal(x, x(1), v); <span class="keyword">...</span><span class="comment">   % Discrete update equation 1</span>
+       @(t, x, p, v) deal(x, p, x(2))};      <span class="comment">% Discrete update equation 2</span>
+dt  = [0.1, 0.15];                           <span class="comment">% Discrete eq. time steps</span>
+ts  = [0 2*pi];                              <span class="comment">% From 0 to 5s</span>
+x0  = [1; 0];                                <span class="comment">% Initial continuous state</span>
+y0  = {0, 0};                                <span class="comment">% Initial discrete state</span>
+
+[t, x, ty, y1, y2] = odehybrid(@rkfixed, ode, de, dt, ts, x0, y0);
+
+clf();
+plot(t, x, <span class="string">'.-'</span>);
+hold <span class="string">on</span>;
+stairs(ty, [y1 y2], <span class="string">':'</span>);
+hold <span class="string">off</span>;
+legend(<span class="string">'Position'</span>, <span class="string">'Velocity'</span>, <span class="string">'Position (0.1s)'</span>, <span class="string">'Velocity (0.15s)'</span>);
+xlabel(<span class="string">'Time (s)'</span>);
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_08.png" alt=""> <p><center><h1>Advanced Options</h1></center></p><h2>Using an OutputFcn<a name="29"></a></h2><p>The <tt>ode45</tt> function allows one to specify an <tt>OutputFcn</tt> to be called when the states are updated. This function can, e.g. update plots or determine if the simulation should stop (if it returns anything but 0). <tt>odehybrid</tt> allows this to pass through, but with all of the arguments separated just like for the ODE and DEs. For instance, here's a simple <tt>OutputFcn</tt>:</p><pre class="codeinput">type <span class="string">example_odehybrid_outputfcn</span>;
+</pre><pre class="codeoutput">
+% A simple example OutputFcn used with examples_odehybrid.
+function status = example_odehybrid_outputfcn(t, x, p, v, flag)
+
+    % Return true to terminate the propagation.
+    status = 0;
+    
+    switch flag
+        
+        % On init, we receive the time span and init. states.
+        case 'init'
+            fprintf('Simulating from %fs to %fs.\n', t);
+            
+        % When done, times and states are all empty.
+        case 'done'
+            fprintf('Finished the simulation.\n');
+            
+        % Otherwise, we receive 1 or more samples.
+        otherwise
+            status = x(1) &lt; 0; % End the simulation with x(1) &lt; 0.
+            
+    end
+    
+end
+</pre><p>Let's add this to the simulation above.</p><pre class="codeinput">options = odeset(<span class="string">'OutputFcn'</span>, @example_odehybrid_outputfcn);
+[t, x, ty, y1, y2] = odehybrid(@rkfixed, ode, de, dt, ts, x0, y0, options);
+</pre><pre class="codeoutput">Simulating from 0.000000s to 6.283185s.
+Finished the simulation.
+</pre><p>Note that the simulation stopped when <tt>x(1)</tt> fell below 0.</p><pre class="codeinput">plot(t, x);
+xlabel(<span class="string">'Time (s)'</span>);
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_09.png" alt=""> <h2>Using Events<a name="32"></a></h2><p>Another useful property of MATLAB's ODE suite is events. These are used to "narrow in" on a specific occurrence. To use event, one write an event function, which should return a continuous value. The propagator will search for the time at which that value crosses 0. For instance, suppose one wanted a simulation to end when a parachutist lands on the ground. Then one could write an event function that returns her height above the ground. The propagator will take small time steps towards the moment when the height achieves 0. The event function should also return two more pieces of information: if the simulation is to stop when the event occurs and the direction of the zero crossing. See <tt>doc odeset</tt> for more on Events.</p><p>In <tt>odehybrid</tt>, events are like those for <tt>ode45</tt>, but take the full set of states as arguments, just like the ODE, DE, and <tt>OutputFcn</tt>. This function will cause propagation to terminate when the velocity (<tt>x(2)</tt>) goes to zero from below.</p><pre class="codeinput">type <span class="string">example_odehybrid_eventfcn</span>
+</pre><pre class="codeoutput">
+% A simple example Event function used with examples_odehybrid.
+function [h, t, d] = example_odehybrid_eventfcn(t, x, p, v)
+    h = x(2); % An "event" occurs when the velocity is 0.
+    t = true; % Terminate on event; stop the simulation when h=0.
+    d = 1;    % Trigger when going positive from negative
+end
+</pre><p>Let's add this to the simulation above. Note that we can only use events with the ODE suite functions. Also, note all the "event" outputs.</p><pre class="codeinput">options = odeset(<span class="string">'Events'</span>, @example_odehybrid_eventfcn);
+[t, x, ty, y1, y2, te, xe, y1e, y2e, ie] = <span class="keyword">...</span>
+                       odehybrid(@ode45, ode, de, dt, ts, x0, y0, options);
+plot(t, x, <span class="keyword">...</span>
+     te, xe, <span class="string">'o'</span>);
+xlabel(<span class="string">'Time (s)'</span>);
+</pre><img vspace="5" hspace="5" src="examples_odehybrid_10.png" alt=""> <p>An event function can return vectors instead of scalars, representing multiple possible zero-crossings. The triggering event index is output in <tt>ie</tt>.</p><h2>Using Structs for Output<a name="35"></a></h2><p>If having eight output arguments is getting to be too many, we can instead use the struct output form.</p><pre class="codeinput">sol = odehybrid(@ode45, ode, de, dt, ts, x0, y0, options)
+</pre><pre class="codeoutput">sol = 
+      t: [463x1 double]
+     yc: {[463x2 double]}
+     td: [42x1 double]
+     yd: {[1]  [0.9950]}
+     te: 3.1416
+    yce: {[-1.0000 2.8363e-14]}
+    yde: {[-0.9991]  [-0.1411]}
+     ie: 1
+</pre><p>The struct has a field for each output of <tt>odehybrid</tt>, with the states grouped into cell arrays.</p><p><center><h1>Comments</h1></center></p><h2>Notes on Speed<a name="38"></a></h2><p>Most folks would like their simulations to run fast. Here are a few things to consider.</p><p>The first thing, which doesn't really have to do with the tools at all, is to make sure the algorithms make sense. For instance, are you simulating a stiff subsystem in the middle of an otherwise loose system (a part with a very fast reaciton time compared to other parts)? That likely causes the entire simulation to run slowly, and often for the purpose of the larger simulation, the stiffest systems can be replaced with functional equivalents (like a table lookup).</p><p>The next most important thing is to make the MATLAB code representing the ODE and the DE as fast as possible. See the MATLAB documentation under "Advaned Software Development &gt; Performance and Memory &gt; Code Performance" (R2014a).</p><p>Choosing the right continuous propagator also makes a large difference. While <tt>ode45</tt> is usually the best place to start, there are better choices are for different types of problems. For MATLAB's ODE propagators, see the MATLAB documentation under "Mathematics &gt; Numerical Integration... &gt; Ordinary Differential Equations". If MATLAB's propagators are taking an excessive number of steps for the continuous-time portions (as above and as is common for control problems), consider using the included <tt><a href="matlab:doc('rk4')">rk4</a></tt> or <tt><a href="matlab:doc('rkfixed')">rkfixed</a></tt> functions. One can also write one's own propagator or pass any Runge-Kutta method's details to <tt>rkfixed</tt> for an instant, custom propagator.</p><p>Using non-numeric types (like structs or cell arrays) for states is convenient and can dramatically reduce development and debugging time. However, there is naturally a speed penalty. How big that penalty is depends the complexity of the state and the functions using the state. In the author's simulations, it's often only about 20% of the overall simulation time, which is a bargain considering the convenience. This should be a last resort.</p><p>Finally, logging naturally adds overhead as well. However, some care was taken in minimize the performance impact from logging, and it's often a smaller concern even than using non-numeric types -- less than 20% of the run time. For large numberes of simulations for which detailed analysis won't be necessary, one can simply turn logging off (pass <tt>[]</tt> for the <tt>log</tt> argument).</p><p><center><h1>Summary</h1></center></p><h2>Summary<a name="40"></a></h2><p>We've covered a lot of ground, including how to set up continuous and discrete simulations, use complex states, add logging, work with the results, and achieve better speed. At this point, a careful reader should be able to start making simulations with <tt>odehybrid</tt>. However, this is not the end of the documentation; it's just a jumping off point. For more info, see:</p><div><ul><li><a href="http://www.anuncommonlab.com/doc/odehybrid/">The online documentation</a></li><li>Help for individual functions (e.g., <tt>doc TimeSeriesLogger</tt>)</li><li><a href="http://www.anuncommonlab.com/articles/how-simulations-work">How simulations work</a></li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Examples of |odehybrid|
+%
+% This script contains numerous examples of using |odehybrid| to simulate
+% continuous and discrete systems, from a simple example to more complex 
+% examples with non-vector states and logging, introducing all primary 
+% features of |odehybrid|. It's meant for viewing directly in MATLAB by 
+% clicking "Publish" in the editor or entering:
+%
+%   home = fileparts(which('examples_odehybrid'));
+%   web(fullfile(home, 'html', 'examples_odehybrid.html'));
+% 
+% at the command line. This will run the code and open the result as HTML.
+% 
+% For additional discussion, see:
+% 
+% * Online documentation (<http://www.anuncommonlab.com/doc/odehybrid/>)
+% * Discussion of how simulations work (<http://www.anuncommonlab.com/articles/how-simulations-work/>)
+% * Motivations behind the tool (<http://www.anuncommonlab.com/blog/a-simulation-engine/>)
+%
+% Copyright 2014 An Uncommon Lab
+
+%%
+% <html><center><h1>Basics</h1></center></html>
+
+%% Short and Direct
+% Let's say we have a continuous system in the form:
+%
+% $$\dot{x}_c(t) = f_c(t, x_c(t), x_d(t))$$
+%
+% where $x_c$ is the continuous state and $x_d$ is some state updated at a 
+% discrete time step as
+%
+% $$x_d(t+\Delta t) = f_d(t, x_c(t), x_d(t))$$
+% 
+% Here, we'll give a quick embodiment of this system to show how we can
+% simulate it from its initial condition over time. Afterwards, we'll go
+% more into how it works.
+% 
+% Let |ode|, |de|, |dt|, |x|, and |u| be $f_c$, $f_d$, $\Delta t$, $x_c$, 
+% and $x_d$, respectively.
+
+ode = @(t, x, u) [0 1; 2 0] * x + [0; 1] * u;  % Differential equation
+de  = @(t, x, u) deal(x, -[8 4] * x);          % Discrete update equation
+dt  = 0.1;                                     % Discrete eq. time step
+ts  = [0 5];                                   % From 0 to 5s
+x0  = [1; 0];                                  % Initial continuous state
+u0  = 0;                                       % Initial discrete state
+[t, x, tu, u] = odehybrid(@ode45, ode, de, dt, ts, x0, u0); % Simulate!
+plot(t, x, tu, u, '.'); xlabel('Time');                     % Plot 'em.
+legend('x_1', 'x_2', 'u', 'Location', 'se');                % Label 'em.
+
+%%
+% This was really quick. Notice how the discrete system is updated 
+% regularly every 0.1s, while the continuous system has many more
+% intermediate steps.
+% 
+% Let's look at what we did. First, it's clear that $f_c$ represents 
+% (suppressing the dependence on time):
+% 
+% $$
+%     \left[ \begin{array}{c} \dot{x}_1 \\ \dot{x}_2 \end{array} \right]
+%   =   \left[ \begin{array}{c c} 0 & 1 \\ 2 & 0 \end{array} \right]
+%       \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right]
+%     + \left[ \begin{array}{c} 0 \\ 1 \end{array} \right]
+%       u
+% $$
+%
+% The discrete state is $u$ and can be thought of as a controller of this 
+% unstable system, guiding it towards [0, 0] (without $u$, the system would
+% diverge from [0, 0]). It's updated at 10Hz according to $f_d$ which is 
+% just:
+%
+% $$
+%   u = \left[ \begin{array}{c c} -8 & -4 \end{array} \right] 
+%       \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right]
+% $$
+%
+% The second input to the |de| function is the |u| state, but the current
+% |u| won't depend on the last |u|, so it's unused.
+%
+% Notice that the discrete update equation actually has _two_ outputs (the
+% |deal| function maps argument 1 to the first output and argument 2 to the
+% second). This is because |odehybrid| allows the discrete update equation
+% to _also_ update the continuous state as well. This is useful for very
+% fast phenomena, like a quick burst of rocket power to change a
+% satellite's orbit. In MATLAB code, we have:
+% 
+%   [x_c, x_d] = de(t, x_c, x_d);
+%
+% Note that, despite that this example is using linear systems, that has
+% nothing to do with odehybrid. The continuous and discrete equations can
+% be anything (nonlinear, stochastic, user inputs, etc.).
+%
+% For the readers with controls backgrounds, this is clearly a discrete 
+% proportional-derivative controller for the unstable linear system.
+% 
+% That's all there is to setting up this basic system, so let's make things
+% more interesting.
+
+%% Multiple States
+% As state vectors become large, they become unwieldy. It's difficult to
+% remember what the 10th state is, or the 2031st state. For this reason,
+% |odehybrid| allows the use of individual states as individual arguments
+% into the ODE and DE functions.
+%
+% Let's reuse the above example, but let's add something to our discrete
+% controller. Instead of a proportional-derivative controllers, let's make
+% it a proportional-integral-derivative control. Now we'll have two
+% discrete states to keep track of: the input, |u|, and the integral term,
+% |i|, that gets updated every step.
+%
+% $$
+%   u = \left[ \begin{array}{c c c} -8 & -4 & -1 \end{array} \right] 
+%       \left[ \begin{array}{c} x_1 \\ x_2 \\ i \end{array} \right]
+% $$
+%
+% That |i| term is updated as:
+%
+% $$
+%   i = i + \frac{1}{2}x_1
+% $$
+%
+% To use multiple states, we'll need them to be inputs to our |ode| and
+% |de| functions. Plus, the |de| function will have to output the new
+% discrete state.
+%
+% We'll also add a disturbance to the model so the integral term has
+% something to account for. We'll just tack |+ [0; 1]| onto the end.
+%
+% Here's the new |ode| (the final input is the integral term, i, but it 
+% doesn't need it): 
+
+ode = @(t, x, u, i)   [0 1; 2 0] * x ...        % Continuous system
+                    + [0; 1] * u ...            %   with feedback control
+                    + [0; 1];                   %   and with a disturbance
+                
+%%
+% The new |de| is easy too (it uses the integral term, but not the last
+% |u|):
+
+de  = @(t, x, u, i) deal(x, ...                 % No change to cont. state
+                         -[8 4 1] * [x; i], ... % Update input
+                         i + 0.5 * x(1));       % Update integrator
+
+%%
+% The options are the same:
+                     
+dt  = 0.1;                                      % Discrete eq. time step
+ts  = [0 5];                                    % From 0 to 5s
+x0  = [1; 0];                                   % Initial continuous state
+
+%%
+% Two say we have two separate discrete states, we use a cell array for the
+% discrete state and put each initial value in the appropriate place.
+d0  = {0, 0};                                   % Initial discrete states
+
+%%
+% The discrete states are output separately:
+
+[t, x, td, u, i] = odehybrid(@ode45, ode, de, dt, ts, x0, d0); % Simulate!
+plot(t, x, td, [u, i], '.'); xlabel('Time');                   % Plot 'em.
+legend('x_1', 'x_2', 'u', '\int x_1(t)/2 dt');                 % Label 'em.
+
+%%
+% That's still pretty easy to implement. We can expand the continuous
+% states too. The important part is that the |ode| has the form:
+%
+%   [x_dot_1, x_dot_2, ..] = ode(t, x1, x2, .., xd1, xd2, ..);
+%
+% And the |de| has the form:
+% 
+%   [x1, x2, .., xd1, xd2, ..] = de(t, x1, x2, .., xd1, xd2, ..);
+%
+% After simulation is done, |odehybrid| will output:
+%
+%   [t, x1, x2, .., td, xd1, xd2, ..] = odehybrid(@ode45, ...
+%                                                 ode, de, dt, ts, ...
+%                                                 {x1, x2, ...}, ...
+%                                                 {xd1, xd2, ...});
+%                                                 
+
+%% Multiple Continuous and Discrete States
+% We'll quickly re-implement the above, with multiple continuous and
+% discrete states. Let's use |p| for $x_1$ and |v| for $x_2$.
+
+ode = @(t, p, v, u, i) deal(v, ...              % dp/dt (same as before)
+                            2 * p + u + 1);     % dv/dt (same as before)
+de  = @(t, p, v, u, i) deal(p, ...              % No change to p
+                            v, ...              % No change to v
+                            -8*p - 4*v - i, ... % Update input
+                            i + 0.5 * p);       % Update integrator
+dt  = 0.1;                                      % Discrete eq. time step
+ts  = [0 5];                                    % From 0 to 5s
+x0  = {1; 0};                                   % Initial continuous states
+d0  = {0, 0};                                   % Initial discrete states
+[t, p, v, td, u, i] = odehybrid(@ode45, ode, de, dt, ts, x0, d0);
+plot(t, [p, v], td, [u, i], '.'); xlabel('Time');
+legend('p', 'v', 'u', '\int p(t)/2 dt');
+
+num_steps = length(t);
+
+%%
+% Note how all of states are inputs to |ode| and |de| (and therefore must
+% be outputs). Also notice how all of the states are output from
+% |odehybrid|.
+
+%% Using Structs for States
+% Aside from using multiple states, we can also use states that aren't
+% simple scalars or vectors. For instance, we can use structs. As a
+% system begins to have many subsystems, using structs is a good way to
+% keep track of scope for all of the states. For instance, we might have
+% |car_sw.cruise_ctrl.speed| and |car_sw.monitor.lane_watcher|, clearly
+% keeping variables scoped to specific systems. Plus, it's easy to hand off
+% relevant substructs to the subsystems:
+%
+%   car_sw.cruise_ctrl = cruise_alg(car_sw.cruise_ctrl, current_speed);
+%   % ...
+%   car_sw.monitor = monitor_alg(car_sw.monitor, sensor_bus, ..);
+
+%%
+% Let's continue our PID controller example, making the discrete state a
+% structure with fields for |u| and |i|, and let's also make the continuous
+% state a struct with fields for |p| and |v|.
+
+type example_odehybrid_structs
+
+%%
+% Updating the structures with the discrete update equation is clear
+% (simply update the structs and return them). For the continuous state,
+% we return structs with the same structure, but the values they contain
+% are the time derivatives. Notice in the above out the output struct of
+% the differential equation is called |dsdt| for "d-signal-by-dt". Its |p|
+% field is really $dp/dt$ and similarly its |v| field is really $dv/dt$. In
+% this way, all of the values in the input struct can be correctly updated 
+% with the corresponding derivatives.
+
+%%
+example_odehybrid_structs();
+
+%% Using Other Types
+% We can mix and match states of different types, including numeric types,
+% structs, and cell arrays. Here's an example set of discrete states with
+% all three:
+%
+%   d0 = {magic(3),                  % 2D array
+%         struct('mode', 1),         % struct
+%         {5, [1 2 3], [1 2; 3 4]}}; % cell array
+%
+% Numeric types can also have any data type, e.g. int16, and this will be
+% handled appropriately.
+%
+% There is one important thing to note: the size and structure of these
+% states can't change during the simulation. For instance, if one state
+% were a string for the status, e.g., 'online', and the status were changed
+% in the simulation to 'offline' (a different number of characters), there
+% would be an error. Instead, one can either use numbers to represent
+% online or offline or one could pad online with an extra space, i.e.,
+% 'online '.
+%
+% For advanced types: if custom objects are desired for the states, those 
+% can be used to. However, they must have a |state_to_vector| method that 
+% returns a complete representation of the internal state numerically and a
+% |vector_to_state| method that reconstructs the object from a vector. See
+% those two function respectively.
+
+%% Using Logging
+% Good simulations allow a lot of analysis. So far, we've only been able to
+% get states out of the system and to analyze those states, but what if
+% there were some intermediate variable we wanted to display? We could use
+% MATLAB's debugger to observe their values at each sample, but it's often
+% better to store all of those values and examine them afterwards REPLACE_WITH_DASH_DASH
+% logging. These tools include a logging mechanism called TimeSeriesLogger 
+% (it has nothing to do with the |timeseries| class in MATLAB). It's pretty
+% easy to use. Let's take a look.
+
+log = TimeSeriesLogger(); % Create it.
+for t = 0:100
+    log.add('signal 1', t, randn());
+    log.add('signal 2', t, 10*rand());
+end
+log.plot();
+
+%%
+% There are many additional options (see the |help TimeSeriesLogger|), but
+% let's focus on how to use this with our simulation. We'll continue to
+% modify the struct example above. This will consist basically of:
+%
+% # Creating a TimeSeriesLogger and passing it to |odehybrid|.
+% # Adding a |log| input to the |ode| and |de| functions.
+% # Adding some logging inside those functions.
+% # Plotting the results when the simulation is done.
+%
+% Here are the new bits:
+% 
+%   log = TimeSeriesLogger();     % Create the logger.
+%   % ...
+%   [t, sig, td, ctrl] = odehybrid(@ode45, @ode, @de, dt, ts, x0, d0, ...
+%                                  [], log);
+%   % ...
+% 
+%   function dsdt = ode(t, signal, controller, log) ...
+%       % ...
+%       if nargin >= 4
+%           log.add('acceleration', t, dsdt.v);
+%       end
+%       % ...
+% 
+%   function [signal, controller] = de(t, signal, controller, log)
+%       %...
+%       log.add('sampled v', t, signal.v);
+%       % ...
+
+%%
+% Here's the complete simulator:
+type example_odehybrid_logging
+
+%%
+% And here's the output from the log.
+example_odehybrid_logging();
+
+%%
+% There we have it. Note that the log _won't_ always be passed in to the
+% ODE. The reason for this is that sometimes the continuous propagators
+% take a large time step, see that the step was too large, and go back and
+% take a smaller time step. The first step is discarded. Because we don't
+% want phantom data points from discarded time steps, |odehybrid| doesn't
+% pass in the logger until the steps are finalized.
+
+%%
+% <html><center><h1>Beyond the Basics</h1></center></html>
+
+%% Interpolation
+% There's a quick detail that must be pointed out about discrete-time
+% updates. Because these update states _directly_, those states change
+% _instantaneously_. That is, at say, t=3 seconds, there's the "original"
+% value of a state ("just to the left" of 3, usually denoted as $3^-$).
+% Then there's the updated value at $3^+$. So our time and state history
+% might look like this:
+
+t = [2.76, 2.91, 3,   3,   3.12].';
+x = [0.2,  0.3,  0.4, 1.1, 1.2].';
+
+clf();
+plot(t, x, '.-');
+
+%%
+% If we were to try to interpolate this data with |interp1|, it wouldn't
+% work, because it wouldn't know how to handle the doubled 3.
+% 
+% Therefore, |odehybrid| includes a function called |interpd| (for
+% "interpolate, discrete") which can handle this type of thing. Simply
+% specific whether the "-" or "+" values are desired during interpolation.
+% For |+|, all interpolation between |t| = 2.91 and 3 will use [0.3 0.4] 
+% while exactly at 3 the datapoint will be 1.7, and interpolation
+% afterwards uses [1.7 and 1.8]. For |-|, it's the same, except the value
+% right at 3 is 0.4.
+
+% Resample |t| and |x| at |ti| using the "right" value:
+ti = (2.8:0.1:3.1).';
+xi = interpd(t, x, ti, '+').'
+xi = interpd(t, x, ti, '-').'
+
+%% Other Propagators
+% While |ode23| and |ode45|, etc., are robust and convenient tools
+% representing some of what's best about MATLAB, |odehybrid| can expose a
+% few pecularities. For instance, regardless of the dynamics, those 
+% functions will always take _at least_ 41 steps to propagate (regardless 
+% of what the 'InitialStep' value is in the |odeset| structure). Since 
+% |odehybrid| uses |ode45| (or whatever propagator is passed in) between 
+% the discrete steps, this means there will be at least 41 time steps 
+% representing the continuous dynamics between the discrete steps. Ouch! 
+% That can be way too much. For this reason, |odehybrid| includes a few of 
+% propagators with the same interface as the |odefun| functions. Perhaps 
+% the easiest is |rkadapt|, which is essentially a drop-in replacement for 
+% |@ode45| in the examples above.
+
+[t, p, v, td, u, i] = odehybrid(@rkadapt, ode, de, dt, ts, x0, d0);
+
+fprintf('This simulation took %.0f%% of the steps required by ode45.\n',...
+        100*length(t)/num_steps);
+
+%%
+% The |ode45| and |rkadapt| functions are _adaptive_ time-step propagators.
+% This means they "figure out" an appropriate time step to take (see the
+% linked article on how simulations work). However, if one knows a good
+% time step, that can be specified with a fixed-step solver. MATLAB doesn't
+% include any of these, so |odehybrid| includes two: |rk4|, the most common
+% fixed-step propagator, and |rkfixed|, which can implement any fixed-step 
+% Runge-Kutta method given the appropriate arguments. We'll show an example
+% using |rk4|. Note that the time step is specified witht he |odeset|
+% structure.
+
+options = odeset('MaxStep', dt);
+[t, p, v, td, u, i] = odehybrid(@rk4, ode, de, dt, ts, x0, d0, options);
+
+fprintf('This simulation took %.0f%% of the steps required by ode45.\n',...
+        100*length(t)/num_steps);
+
+%% Multiple Discrete Updates
+% Using multiple discrete update equations is as passing multiple function
+% (in a cell array) in for |de| and passing their corresponding time steps 
+% in for |dt|. Here is a simple harmonic oscillator. The discrete updates
+% only "sample" the oscillator, with the first update recording the
+% "position" term and the second update recording the "velocity" term. Each
+% discrete update must take in and return all continuous and discrete
+% states (just like for the case with a single discrete update equation).
+
+ode = @(t, x, p, v) [0 1; -1 0] * x;         % Differential equation
+de  = {@(t, x, p, v) deal(x, x(1), v); ...   % Discrete update equation 1
+       @(t, x, p, v) deal(x, p, x(2))};      % Discrete update equation 2
+dt  = [0.1, 0.15];                           % Discrete eq. time steps
+ts  = [0 2*pi];                              % From 0 to 5s
+x0  = [1; 0];                                % Initial continuous state
+y0  = {0, 0};                                % Initial discrete state
+
+[t, x, ty, y1, y2] = odehybrid(@rkfixed, ode, de, dt, ts, x0, y0);
+
+clf();
+plot(t, x, '.-');
+hold on;
+stairs(ty, [y1 y2], ':');
+hold off;
+legend('Position', 'Velocity', 'Position (0.1s)', 'Velocity (0.15s)');
+xlabel('Time (s)');
+
+%%
+% <html><center><h1>Advanced Options</h1></center></html>
+
+%% Using an OutputFcn
+% The |ode45| function allows one to specify an |OutputFcn| to be called
+% when the states are updated. This function can, e.g. update plots or 
+% determine if the simulation should stop (if it returns anything but 0).
+% |odehybrid| allows this to pass through, but with all of the arguments 
+% separated just like for the ODE and DEs. For instance, here's a simple
+% |OutputFcn|:
+
+type example_odehybrid_outputfcn;
+
+%%
+% Let's add this to the simulation above.
+options = odeset('OutputFcn', @example_odehybrid_outputfcn);
+[t, x, ty, y1, y2] = odehybrid(@rkfixed, ode, de, dt, ts, x0, y0, options);
+
+%%
+% Note that the simulation stopped when |x(1)| fell below 0.
+plot(t, x);
+xlabel('Time (s)');
+
+%% Using Events
+% Another useful property of MATLAB's ODE suite is events. These are used
+% to "narrow in" on a specific occurrence. To use event, one write an event
+% function, which should return a continuous value. The propagator will
+% search for the time at which that value crosses 0. For instance, suppose
+% one wanted a simulation to end when a parachutist lands on the ground.
+% Then one could write an event function that returns her height above the
+% ground. The propagator will take small time steps towards the moment when
+% the height achieves 0. The event function should also return two more
+% pieces of information: if the simulation is to stop when the event occurs
+% and the direction of the zero crossing. See |doc odeset| for more on
+% Events.
+%
+% In |odehybrid|, events are like those for |ode45|, but take the full set
+% of states as arguments, just like the ODE, DE, and |OutputFcn|. This
+% function will cause propagation to terminate when the velocity (|x(2)|)
+% goes to zero from below.
+
+type example_odehybrid_eventfcn
+
+%%
+% Let's add this to the simulation above. Note that we can only use events
+% with the ODE suite functions. Also, note all the "event" outputs.
+
+options = odeset('Events', @example_odehybrid_eventfcn);
+[t, x, ty, y1, y2, te, xe, y1e, y2e, ie] = ...
+                       odehybrid(@ode45, ode, de, dt, ts, x0, y0, options);
+plot(t, x, ...
+     te, xe, 'o');
+xlabel('Time (s)');
+
+%%
+% An event function can return vectors instead of scalars, representing
+% multiple possible zero-crossings. The triggering event index is output in
+% |ie|.
+
+%% Using Structs for Output
+% If having eight output arguments is getting to be too many, we can
+% instead use the struct output form.
+
+sol = odehybrid(@ode45, ode, de, dt, ts, x0, y0, options)
+
+%%
+% The struct has a field for each output of |odehybrid|, with the states 
+% grouped into cell arrays.
+
+%%
+% <html><center><h1>Comments</h1></center></html>
+
+%% Notes on Speed
+% Most folks would like their simulations to run fast. Here are a few
+% things to consider.
+% 
+% The first thing, which doesn't really have to do with the tools at all,
+% is to make sure the algorithms make sense. For instance, are you
+% simulating a stiff subsystem in the middle of an otherwise loose
+% system (a part with a very fast reaciton time compared to other parts)?
+% That likely causes the entire simulation to run slowly, and often for the
+% purpose of the larger simulation, the stiffest systems can be replaced 
+% with functional equivalents (like a table lookup).
+%
+% The next most important thing is to make the MATLAB code representing the
+% ODE and the DE as fast as possible. See the MATLAB documentation under
+% "Advaned Software Development > Performance and Memory > Code
+% Performance" (R2014a).
+% 
+% Choosing the right continuous propagator also makes a large difference.
+% While |ode45| is usually the best place to start, there are better 
+% choices are for different types of problems. For MATLAB's ODE 
+% propagators, see the MATLAB documentation under "Mathematics > Numerical 
+% Integration... > Ordinary Differential Equations". If MATLAB's
+% propagators are taking an excessive number of steps for the 
+% continuous-time portions (as above and as is common for control 
+% problems), consider using the included 
+% |<matlab:doc('rk4') rk4>| or |<matlab:doc('rkfixed') rkfixed>| functions.
+% One can also write one's own propagator or pass any Runge-Kutta method's
+% details to |rkfixed| for an instant, custom propagator.
+%
+% Using non-numeric types (like structs or cell arrays) for states is
+% convenient and can dramatically reduce development and debugging time. 
+% However, there is naturally a speed penalty. How big that penalty is
+% depends the complexity of the state and the functions using the state. In
+% the author's simulations, it's often only about 20% of the overall 
+% simulation time, which is a bargain considering the convenience. This
+% should be a last resort.
+% 
+% Finally, logging naturally adds overhead as well. However, some care was
+% taken in minimize the performance impact from logging, and it's often a
+% smaller concern even than using non-numeric types REPLACE_WITH_DASH_DASH less than 20% of the
+% run time. For large numberes of simulations for which detailed analysis
+% won't be necessary, one can simply turn logging off (pass |[]| for the
+% |log| argument).
+
+%%
+% <html><center><h1>Summary</h1></center></html>
+
+%% Summary
+% We've covered a lot of ground, including how to set up continuous and
+% discrete simulations, use complex states, add logging, work with the
+% results, and achieve better speed. At this point, a careful reader should
+% be able to start making simulations with |odehybrid|. However, this is 
+% not the end of the documentation; it's just a jumping off point. For more
+% info, see:
+% 
+% * <http://www.anuncommonlab.com/doc/odehybrid/ The online documentation>
+% * Help for individual functions (e.g., |doc TimeSeriesLogger|)
+% * <http://www.anuncommonlab.com/articles/how-simulations-work How simulations work>
+
+##### SOURCE END #####
+--></body></html>
