@@ -1,2 +1,5 @@
 # MATLAB Auto-saves
-.asv
+*.asv
+
+# File indicating that this directory should be kept on the path
+matlab_path
