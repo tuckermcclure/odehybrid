@@ -20,10 +20,10 @@ function [t, x] = rkfixed(ode, ts, x0, dt, a, b, c)
 % weightes, nodes, and Runge-Kutta matrix (together, the Butcher tableau) 
 % into this function. See the example below.
 %
-% [t, x] = rk4(ode, ts, x0, dt);
-% [t, x] = rk4(ode, ts, x0, dt, a, b, c);
-% [t, x] = rk4(ode, ts, x0, options);
-% [t, x] = rk4(ode, ts, x0, options, a, b, c);
+% [t, x] = rkfixed(ode, ts, x0, dt);
+% [t, x] = rkfixed(ode, ts, x0, dt, a, b, c);
+% [t, x] = rkfixed(ode, ts, x0, options);
+% [t, x] = rkfixed(ode, ts, x0, options, a, b, c);
 %
 % Inputs:
 %
